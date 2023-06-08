@@ -1,28 +1,14 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import "fmt"
 
-// Storage is a wrapper for combined cache and database operations
+// Storage es una envoltura para operaciones combinadas de cache y base de datos
 type Storage struct {
 	sqlstorage SQLStorage
 	cache      *Cache
 }
 
-// Init kicks off the database connector
+// Init inicia el conector de la base de datos
 func (s *Storage) Init(user, password, host, name, redisHost, redisPort string, cache bool) error {
 	if err := s.sqlstorage.Init(user, password, host, name); err != nil {
 		return err
@@ -37,7 +23,7 @@ func (s *Storage) Init(user, password, host, name, redisHost, redisPort string, 
 	return nil
 }
 
-// List retrieves a list of todos from either cache if cached or database
+// List recupera una lista de todos de la cache, si esta almacenada, o de la base de datos
 func (s Storage) List() (Todos, error) {
 	ts, err := s.cache.List()
 	if err != nil {
@@ -55,7 +41,7 @@ func (s Storage) List() (Todos, error) {
 	return ts, nil
 }
 
-// Create records a new todo in the database.
+// Create registra una nueva tarea en la base de datos.
 func (s Storage) Create(t Todo) (Todo, error) {
 	if err := s.cache.DeleteList(); err != nil {
 		return Todo{}, fmt.Errorf("error clearing cache : %v", err)
@@ -73,7 +59,7 @@ func (s Storage) Create(t Todo) (Todo, error) {
 	return t, nil
 }
 
-// Read returns a single todo from cache or database
+// Read devuelve una sola tarea de la cache o de la base de datos
 func (s Storage) Read(id string) (Todo, error) {
 	t, err := s.cache.Get(id)
 	if err != nil {
@@ -91,7 +77,7 @@ func (s Storage) Read(id string) (Todo, error) {
 	return t, nil
 }
 
-// Update changes one todo in the database.
+// Update modifica una tarea en la base de datos.
 func (s Storage) Update(t Todo) error {
 	if err := s.cache.DeleteList(); err != nil {
 		return fmt.Errorf("error clearing cache : %v", err)
@@ -108,7 +94,7 @@ func (s Storage) Update(t Todo) error {
 	return nil
 }
 
-// Delete removes one todo from the database.
+// Delete elimina una tarea de la base de datos.
 func (s Storage) Delete(id string) error {
 	if err := s.cache.DeleteList(); err != nil {
 		return fmt.Errorf("error clearing cache : %v", err)

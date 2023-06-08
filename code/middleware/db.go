@@ -1,17 +1,3 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import (
@@ -19,12 +5,12 @@ import (
 	"strconv"
 )
 
-// SQLStorage is a wrapper for database operations
+// SQLStorage es una estructura para las operaciones de base de datos
 type SQLStorage struct {
 	db *sql.DB
 }
 
-// Init kicks off the database connector
+// Init inicia el conector de la base de datos
 func (s *SQLStorage) Init(user, password, host, name string) error {
 	var err error
 	s.db, err = sql.Open("mysql", user+":"+password+"@tcp("+host+")/"+name+"?parseTime=true")
@@ -35,12 +21,12 @@ func (s *SQLStorage) Init(user, password, host, name string) error {
 	return nil
 }
 
-// Close ends the database connection
+// Close finaliza la conexion a la base de datos
 func (s *SQLStorage) Close() error {
 	return s.db.Close()
 }
 
-// List returns a list of all todos
+// List devuelve una lista de todos los todos
 func (s SQLStorage) List() (Todos, error) {
 	ts := Todos{}
 	results, err := s.db.Query("SELECT * FROM todo ORDER BY updated DESC")
@@ -59,7 +45,7 @@ func (s SQLStorage) List() (Todos, error) {
 	return ts, nil
 }
 
-// Create records a new todo in the database.
+// Create registra una nueva tarea en la base de datos.
 func (s SQLStorage) Create(t Todo) (Todo, error) {
 	sql := `
 		INSERT INTO todo(title, updated) 
@@ -104,7 +90,7 @@ func resultToTodo(results *sql.Rows) (Todo, error) {
 	return t, nil
 }
 
-// Read returns a single todo from the database
+// Read devuelve una sola tarea de la base de datos
 func (s SQLStorage) Read(id string) (Todo, error) {
 	t := Todo{}
 	results, err := s.db.Query("SELECT * FROM todo WHERE id =?", id)
@@ -121,7 +107,7 @@ func (s SQLStorage) Read(id string) (Todo, error) {
 	return t, nil
 }
 
-// Update changes one todo in the database.
+// Update modifica una tarea en la base de datos.
 func (s SQLStorage) Update(t Todo) error {
 	orig, err := s.Read(strconv.Itoa(t.ID))
 	if err != nil {
@@ -164,7 +150,7 @@ func (s SQLStorage) Update(t Todo) error {
 	return nil
 }
 
-// Delete removes one todo from the database.
+// Delete elimina una tarea de la base de datos.
 func (s SQLStorage) Delete(id string) error {
 	op, err := s.db.Prepare("DELETE FROM todo WHERE id =?")
 	if err != nil {

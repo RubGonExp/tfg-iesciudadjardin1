@@ -1,17 +1,3 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import (
@@ -23,16 +9,16 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-// RedisPool is an interface that allows us to swap in an mock for testing cache
-// code.
+// RedisPool es una interfaz que nos permite intercambiar una maqueta para probar el
+// codigo en cache.
 type RedisPool interface {
 	Get() redis.Conn
 }
 
-// ErrCacheMiss error indicates that an item is not in the cache
+// ErrCacheMiss error indica que un elemento no esta en la cache
 var ErrCacheMiss = fmt.Errorf("item is not in cache")
 
-// NewCache returns an initialized cache ready to go.
+// NewCache devuelve una cache inicializada lista para funcionar.
 func NewCache(redisHost, redisPort string, enabled bool) (*Cache, error) {
 	c := &Cache{}
 	pool := c.InitPool(redisHost, redisPort)
@@ -41,7 +27,7 @@ func NewCache(redisHost, redisPort string, enabled bool) (*Cache, error) {
 	return c, nil
 }
 
-// Cache abstracts all of the operations of caching for the application
+// Cache abstrae todas las operaciones de almacenamiento en cache para la aplicación
 type Cache struct {
 	// redisPool *redis.Pool
 	redisPool RedisPool
@@ -52,7 +38,7 @@ func (c *Cache) log(msg string) {
 	log.Printf("Cache     : %s\n", msg)
 }
 
-// InitPool starts the cache off
+// InitPool arranca la cache
 func (c Cache) InitPool(redisHost, redisPort string) RedisPool {
 	redisAddr := fmt.Sprintf("%s:%s", redisHost, redisPort)
 	msg := fmt.Sprintf("Initialized Redis at %s", redisAddr)
@@ -66,7 +52,7 @@ func (c Cache) InitPool(redisHost, redisPort string) RedisPool {
 	return pool
 }
 
-// Clear removes all items from the cache.
+// Clear elimina todos los elementos de la cache.
 func (c Cache) Clear() error {
 	if !c.enabled {
 		return nil
@@ -80,7 +66,7 @@ func (c Cache) Clear() error {
 	return nil
 }
 
-// Save records a todo into the cache.
+// Save registra una tarea en la cache.
 func (c *Cache) Save(todo Todo) error {
 	if !c.enabled {
 		return nil
@@ -104,7 +90,7 @@ func (c *Cache) Save(todo Todo) error {
 	return nil
 }
 
-// Get gets a todo from the cache.
+// Get obtiene una tarea de la cache.
 func (c *Cache) Get(key string) (Todo, error) {
 	t := Todo{}
 	if !c.enabled {
@@ -128,7 +114,7 @@ func (c *Cache) Get(key string) (Todo, error) {
 	return t, nil
 }
 
-// Delete will remove a todo from the cache completely.
+// Delete eliminara completamente una tarea de la cache.
 func (c *Cache) Delete(key string) error {
 	if !c.enabled {
 		return nil
@@ -144,7 +130,7 @@ func (c *Cache) Delete(key string) error {
 	return nil
 }
 
-// List gets all of the todos from the cache.
+// List obtiene todos los todos de la cache.
 func (c *Cache) List() (Todos, error) {
 	t := Todos{}
 	if !c.enabled {
@@ -168,7 +154,7 @@ func (c *Cache) List() (Todos, error) {
 	return t, nil
 }
 
-// SaveList records a todo list into the cache.
+// SaveList registra una lista de tareas en la cache.
 func (c *Cache) SaveList(todos Todos) error {
 	if !c.enabled {
 		return nil
@@ -189,7 +175,7 @@ func (c *Cache) SaveList(todos Todos) error {
 	return nil
 }
 
-// DeleteList deletes a todo list into the cache.
+// DeleteList borra una lista de tareas en la cache.
 func (c *Cache) DeleteList() error {
 	if !c.enabled {
 		return nil

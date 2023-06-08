@@ -1,17 +1,3 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import (
@@ -31,7 +17,7 @@ type Todo struct {
 	completedNull sql.NullTime
 }
 
-// JSON marshalls the content of a todo to json.
+// JSON transforma el contenido de una tarea en json.
 func (t Todo) JSON() (string, error) {
 	bytes, err := json.Marshal(t)
 	if err != nil {
@@ -41,7 +27,7 @@ func (t Todo) JSON() (string, error) {
 	return string(bytes), nil
 }
 
-// JSONBytes marshalls the content of a todo to json as a byte array.
+// JSONBytes transforma el contenido de una tarea en json como una matriz de bytes.
 func (t Todo) JSONBytes() ([]byte, error) {
 	bytes, err := json.Marshal(t)
 	if err != nil {
@@ -51,14 +37,14 @@ func (t Todo) JSONBytes() ([]byte, error) {
 	return bytes, nil
 }
 
-// Key returns the id as a string.
+// Key devuelve el id en forma de cadena.
 func (t Todo) Key() string {
 	return strconv.Itoa(t.ID)
 }
 
 type Todos []Todo
 
-// JSON marshalls the content of a slice of todos to json.
+// JSON transforma el contenido de una porcion de todos en json.
 func (t Todos) JSON() (string, error) {
 	bytes, err := json.Marshal(t)
 	if err != nil {
@@ -68,7 +54,7 @@ func (t Todos) JSON() (string, error) {
 	return string(bytes), nil
 }
 
-// JSONBytes marshalls the content of a slice of todos to json as a byte array.
+// JSONBytes transforma el contenido de una porcion de todos en json como una matriz de bytes.
 func (t Todos) JSONBytes() ([]byte, error) {
 	bytes, err := json.Marshal(t)
 	if err != nil {
