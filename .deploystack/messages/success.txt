@@ -1,8 +1,8 @@
 
 
 
-CONGRATS!!!!!!! 
-You have configured a project, spun up architecture, and deployed code.
+ENHORABUENA!!!!!!! 
+Ha configurado un proyecto, puesto en marcha la arquitectura y desplegado el codigo.
 
-See your site at the url labled "endpoint" referenced above. It might 
-take a few minutes to be available, as all of the constiuent parts warm up.
+Consulte su sitio en la url "endpoint" a la que se hace referencia más arriba. Puede que 
+tarde unos minutos en estar disponibles, ya que todas las piezas constituyentes estan en caliente.
