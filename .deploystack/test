@@ -1,26 +1,7 @@
-
-# Copyright 2021 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# I think it's a good idea to test your scripts. It's kinda awkward but you'll 
-# be happy you did 
-
-
-# DON'T REMOVE FROM test script.
+# NO ELIMINAR DEL script de prueba.
 CYAN='\033[0;36m'
 BCYAN='\033[1;36m'
-NC='\033[0m' # No Color
+NC='\033[0m' # Sin Color
 DIVIDER=$(printf %"$(tput cols)"s | tr " " "*")
 DIVIDER+="\n"
 
@@ -37,7 +18,7 @@ function get_project_number() {
     eval $__resultvar="'$VALUE'"
 }
 
-# DISPLAY HELPERS
+# AYUDAS DE VISUALIZACION
 function section_open() {
     section_description=$1
     printf "$DIVIDER"
@@ -76,7 +57,7 @@ function evalTest() {
 
     printf "$expected is ok\n"
 }
-# END DON'T REMOVE FROM test script.
+# END NO ELIMINAR DEL script de prueba.
 
 
 
@@ -120,7 +101,7 @@ section_open "Testing VPN"
     evalTest 'gcloud compute addresses describe $BASENAME-vpc-address --global --format="value(name)"' "$BASENAME-vpc-address"
 section_close
 
-# This is a bug. Everytime this command runs "Encryption: Google Managed Key gets thrown in STDERR"
+# Se trata de un error. Cada vez que se ejecuta este comando "Encryption: Google Managed Key se lanza en STDERR"
 section_open "Testing Artifact Registry repository for containers"
     evalTest 'gcloud artifacts repositories describe three-tier-app-app --location $REGION --format="value(name)"' "EXPECTERROR"
 section_close
@@ -169,6 +150,6 @@ section_open "Testing Artifact Registry repoistory for containers"
 section_close
 
 printf "$DIVIDER"
-printf "CONGRATS!!!!!!! \n"
-printf "You got the end the of your test with everything working. \n"
+printf "ENHORABUENA!!!!!!! \n"
+printf "Tienes el final de la prueba con todo funcionando. \n"
 printf "$DIVIDER"
