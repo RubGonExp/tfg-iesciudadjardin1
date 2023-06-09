@@ -1,22 +1,3 @@
-/**
- * Copyright 2022 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-
-
-
 data "google_project" "project" {
   project_id = var.project_id
 }
@@ -29,7 +10,7 @@ resource "google_project_service" "all" {
   disable_on_destroy = false
 }
 
-# Handle Permissions
+# Gestionar permisos
 variable "build_roles_list" {
   description = "The list of roles that build needs for"
   type        = list(string)
@@ -139,7 +120,7 @@ resource "google_sql_database_instance" "main" {
   }
 }
 
-# Handle redis instance
+# Manejar instancia de redis
 resource "google_redis_instance" "main" {
   authorized_network      = google_compute_network.main.id
   connect_mode            = "DIRECT_PEERING"
@@ -155,7 +136,7 @@ resource "google_redis_instance" "main" {
   depends_on              = [google_project_service.all]
 }
 
-# Handle artifact registry
+# Gestionar el registro de artefactos
 resource "google_artifact_registry_repository" "todo_app" {
   provider      = google-beta
   format        = "DOCKER"
@@ -165,7 +146,7 @@ resource "google_artifact_registry_repository" "todo_app" {
   depends_on    = [google_project_service.all]
 }
 
-# Handle secrets
+# Gestionar secrets
 resource "google_secret_manager_secret" "redishost" {
   project = var.project_number
   replication {

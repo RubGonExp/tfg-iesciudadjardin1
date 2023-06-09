@@ -1,17 +1,3 @@
-// Copyright 2021 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package main
 
 import (
@@ -62,20 +48,19 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 }
 
-// CORSRouterDecorator applies CORS headers to a mux.Router
+// CORSRouterDecorator aplica cabeceras CORS a un mux.Router
 type CORSRouterDecorator struct {
 	R *mux.Router
 }
 
-// ServeHTTP wraps the HTTP server enabling CORS headers.
-// For more info about CORS, visit https://www.w3.org/TR/cors/
+// ServeHTTP envuelve el servidor HTTP habilitando las cabeceras CORS.
 func (c *CORSRouterDecorator) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	if origin := req.Header.Get("Origin"); origin != "" {
 		rw.Header().Set("Access-Control-Allow-Origin", origin)
 		rw.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		rw.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Type, YourOwnHeader")
 	}
-	// Stop here if its Preflighted OPTIONS request
+	// Stop aqui si se trata de una solicitud de OPCIONES PREVISTAS
 	if req.Method == "OPTIONS" {
 		return
 	}
@@ -185,7 +170,7 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, msg, http.StatusNoContent)
 }
 
-// JSONProducer is an interface that spits out a JSON string version of itself
+// JSONProducer es una interfaz que escupe una version en cadena JSON de si misma
 type JSONProducer interface {
 	JSON() (string, error)
 	JSONBytes() ([]byte, error)
@@ -224,13 +209,13 @@ func weblog(msg string) {
 	log.Printf("Webserver : %s", msg)
 }
 
-// Message is a structure for communicating additional data to API consumer.
+// Message es una estructura para comunicar datos adicionales al consumidor de la API.
 type Message struct {
 	Text    string `json:"text"`
 	Details string `json:"details"`
 }
 
-// JSON marshalls the content of a todo to json.
+// JSON transforma el contenido de una tarea en json.
 func (m Message) JSON() (string, error) {
 	bytes, err := json.Marshal(m)
 	if err != nil {
@@ -240,7 +225,7 @@ func (m Message) JSON() (string, error) {
 	return string(bytes), nil
 }
 
-// JSONBytes marshalls the content of a todo to json as a byte array.
+// JSONBytes transforma el contenido de una tarea en json como una matriz de bytes.
 func (m Message) JSONBytes() ([]byte, error) {
 	bytes, err := json.Marshal(m)
 	if err != nil {
